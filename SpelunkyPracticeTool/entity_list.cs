@@ -4,6 +4,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -237,48 +239,118 @@ namespace SpelunkyPracticeTool
 
     public partial class entity_list : Form
     {
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern int GetScrollPos(IntPtr hWnd, int nBar);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern int SetScrollPos(IntPtr hWnd, int nBar, int nPos, bool bRedraw);
+
+        private const int SB_HORZ = 0x0;
+        private const int SB_VERT = 0x1;
+
+        Dictionary<int, EntityData> Entities = new Dictionary<int, EntityData>();
+
         public entity_list()
         {
             InitializeComponent();
+
+            typeof(Panel).InvokeMember("DoubleBuffered",
+                BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+                null, panel, new object[] { true });
+
+            ListFont = new Font("Arial", 9);
+            YOff = Font.Height + 1;
         }
 
         private void fetchlistbutton_Click(object sender, EventArgs e)
         {
-            Tree.Nodes.Clear();
-            foreach (var ptr in getEntities())
-            {
-                var node = Tree.Nodes.Add(ptr.ToString(), ((AllEntities)Memory.ReadInt32(ptr + 0xC)).ToString());
-                var nodes = node.Nodes;
-
-                nodes.Add("address: "+ptr.ToString("X"));
-                nodes.Add("pos: " + Memory.ReadFloat(ptr + 0x30) + " , " + Memory.ReadFloat(ptr + 0x34));
-                
-            }
+            RefreshTree();
         }
 
-        public IEnumerable<int> getEntities()
+        public void RefreshTree()
         {
-            if (Memory.Process != null && !Memory.Process.HasExited)
+            if (Memory.Process == null || Memory.Process.HasExited) return;
+
+            int address = Memory.getPointerAddress(Memory.BaseAddress + 0x1384B4, 0x30, 0), ptr, i = 0;
+            EntityData en;
+
+            var c = new Dictionary<int, EntityData>();
+            
+            while ((ptr = Memory.ReadInt32(address + i++ * 4)) != 0)
+                if(!c.ContainsKey(ptr))
+                    c.Add(ptr, Entities.TryGetValue(ptr, out en) ? en.UpdateValues() : new EntityData(ptr));
+
+            Entities = c;
+
+            panel.Invalidate();
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            Updater.Enabled = !Updater.Enabled;
+            toolStripButton2.Text = (Updater.Enabled ? "Disable" : "Enable")+" Auto-Update";
+        }
+
+        private void Updater_Tick(object sender, EventArgs e)
+        {
+            RefreshTree();
+        }
+
+        int YOff = 20;
+        Font ListFont;
+        const int XOff = 15;
+        const int NodeOff = 30;
+        private void panel_Paint(object sender, PaintEventArgs e)
+        {
+            var g = e.Graphics;
+            var b = new SolidBrush(Color.Black);
+
+            int y = panel.AutoScrollPosition.Y;
+            g.Clear(Color.White);
+            foreach(var Entity in Entities.Values)
             {
-                int address = Memory.getPointerAddress(Memory.BaseAddress + 0x1384B4, 0x30, 0);
-                int ptr;
+                y += YOff;
 
-                while ((ptr = Memory.ReadInt32(address)) != 0)
+                g.DrawString((Entity.ShowValues ? '-' : '+' ) + Entity.Name, Font, b, XOff, y);
+
+                if (!Entity.ShowValues) continue;
+                
+                foreach(var value in Entity.Values)
                 {
-                    yield return ptr;
+                    y += YOff;
 
-                    address += 4;
+                    g.DrawString(value,DefaultFont,b,NodeOff, y);
                 }
             }
+
+            panel.AutoScroll = true;
+            AutoScrollLabel.Location = new Point(0,y+YOff);
         }
 
-        private void Tree_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void panel_Click(object sender, EventArgs e)
         {
+            
         }
 
-        private void Tree_AfterSelect(object sender, TreeViewEventArgs e)
+        private void panel_MouseUp(object sender, MouseEventArgs e)
         {
+            int y = panel.AutoScrollPosition.Y;
+            foreach (var Entity in Entities.Values)
+            {
+                y += YOff;
+                if(y < e.Y && y+YOff > e.Y)
+                {
+                    Entity.ShowValues = !Entity.ShowValues;
+                    panel.Invalidate();
 
+                    return;
+                }
+                    
+                if (!Entity.ShowValues) continue;
+
+                foreach (var value in Entity.Values)
+                    y += YOff;
+            }
         }
     }
 }
