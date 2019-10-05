@@ -18,7 +18,7 @@ namespace SpelunkyPracticeTool
             Address = ptr;
 
             Name = ((AllEntities)Memory.ReadInt32(ptr + 0xC)).ToString();
-
+            UpdateValues();
         }
 
         public EntityData UpdateValues()
@@ -26,7 +26,6 @@ namespace SpelunkyPracticeTool
             Values = new string[]{
                 $"Address: {Address:X}",
                 $"X: {Memory.ReadFloat(Address+0x30)} Y: {Memory.ReadFloat(Address+0x34)}",
-                $"Layer: {Memory.ReadInt32(Address+0x8)}"
             };
 
             return this;

@@ -63,11 +63,16 @@
             this.nmHP = new System.Windows.Forms.NumericUpDown();
             this.nmBombs = new System.Windows.Forms.NumericUpDown();
             this.nmRopes = new System.Windows.Forms.NumericUpDown();
+            this.cbSA = new System.Windows.Forms.CheckBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cbAN2 = new System.Windows.Forms.CheckBox();
+            this.cbLookdown = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.ItemBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nmHP)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmBombs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmRopes)).BeginInit();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // CheckBoxBM
@@ -139,7 +144,7 @@
             // statusLbl
             // 
             this.statusLbl.AutoSize = true;
-            this.statusLbl.Location = new System.Drawing.Point(81, 510);
+            this.statusLbl.Location = new System.Drawing.Point(69, 639);
             this.statusLbl.Name = "statusLbl";
             this.statusLbl.Size = new System.Drawing.Size(127, 13);
             this.statusLbl.TabIndex = 2;
@@ -402,7 +407,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(15, 484);
+            this.button1.Location = new System.Drawing.Point(14, 613);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(259, 23);
             this.button1.TabIndex = 8;
@@ -452,11 +457,57 @@
             0});
             this.nmRopes.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged_1);
             // 
+            // cbSA
+            // 
+            this.cbSA.AutoSize = true;
+            this.cbSA.Location = new System.Drawing.Point(6, 19);
+            this.cbSA.Name = "cbSA";
+            this.cbSA.Size = new System.Drawing.Size(115, 17);
+            this.cbSA.TabIndex = 10;
+            this.cbSA.Text = "Shopkeeper Aggro";
+            this.cbSA.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.cbLookdown);
+            this.groupBox2.Controls.Add(this.cbAN2);
+            this.groupBox2.Controls.Add(this.cbSA);
+            this.groupBox2.Location = new System.Drawing.Point(18, 485);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(256, 90);
+            this.groupBox2.TabIndex = 11;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Miscellaneous";
+            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter_1);
+            // 
+            // cbAN2
+            // 
+            this.cbAN2.AutoSize = true;
+            this.cbAN2.Location = new System.Drawing.Point(6, 42);
+            this.cbAN2.Name = "cbAN2";
+            this.cbAN2.Size = new System.Drawing.Size(98, 17);
+            this.cbAN2.TabIndex = 10;
+            this.cbAN2.Text = "Anubis 2 Aggro";
+            this.cbAN2.UseVisualStyleBackColor = true;
+            // 
+            // cbLookdown
+            // 
+            this.cbLookdown.AutoSize = true;
+            this.cbLookdown.Checked = true;
+            this.cbLookdown.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbLookdown.Location = new System.Drawing.Point(7, 66);
+            this.cbLookdown.Name = "cbLookdown";
+            this.cbLookdown.Size = new System.Drawing.Size(140, 17);
+            this.cbLookdown.TabIndex = 11;
+            this.cbLookdown.Text = "Disable Slow Lookdown";
+            this.cbLookdown.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(286, 532);
+            this.ClientSize = new System.Drawing.Size(286, 661);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.nmRopes);
             this.Controls.Add(this.nmBombs);
             this.Controls.Add(this.nmHP);
@@ -480,6 +531,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nmHP)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmBombs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nmRopes)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -487,7 +540,6 @@
 
         #endregion
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Timer StatusTimer;
         public System.Windows.Forms.CheckBox checkBoxCOG;
         public System.Windows.Forms.CheckBox cbCastle;
         public System.Windows.Forms.CheckBox CheckBoxBM;
@@ -520,6 +572,11 @@
         public System.Windows.Forms.CheckBox cbJetpack;
         public System.Windows.Forms.CheckBox cbCape;
         public System.Windows.Forms.CheckBox cbVladsCape;
+        public System.Windows.Forms.CheckBox cbSA;
+        private System.Windows.Forms.GroupBox groupBox2;
+        public System.Windows.Forms.CheckBox cbAN2;
+        public System.Windows.Forms.Timer StatusTimer;
+        public System.Windows.Forms.CheckBox cbLookdown;
     }
 }
 

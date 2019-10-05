@@ -77,6 +77,11 @@ namespace SpelunkyPracticeTool
             return WriteBytes(BitConverter.GetBytes(value), address, offsets);
         }
 
+        public static bool WriteDouble(double value, int address, params int[] offsets)
+        {
+            return WriteBytes(BitConverter.GetBytes(value), address, offsets);
+        }
+
         public static bool WriteBool(bool value, int address, params int[] offsets)
         {
             return WriteBytes(BitConverter.GetBytes(value), address, offsets);
@@ -103,6 +108,13 @@ namespace SpelunkyPracticeTool
             if (Process.HasExited) return 0;
 
             return BitConverter.ToSingle(ReadBytes(address, 4, offsets), 0);
+        }
+
+        public static double ReadDouble(int address, params int[] offsets)
+        {
+            if (Process.HasExited) return 0;
+
+            return BitConverter.ToDouble(ReadBytes(address,sizeof(double),offsets), 0);
         }
 
 

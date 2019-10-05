@@ -10,9 +10,23 @@ namespace SpelunkyPracticeTool
     {
         static int ba { get { return Memory.BaseAddress; } }
 
+        public static class Camera
+        {
+            public static float LookdownSpeed
+            {
+                get { return Memory.ReadFloat(0x138558 + ba, 0x38); }
+                set { Memory.WriteFloat(value, 0x138558 + ba, 0x38); }
+            }
+        }
 
         public static class Level
         {
+            public static int CurrentState
+            {
+                get { return Memory.ReadInt32(0x1384B4 + ba, 0x58); }
+                set { Memory.WriteInt(value, 0x1384B4 + ba, 0x58); }
+            }
+
             public static bool ForceBM
             {
                 get { return Memory.ReadBool(0x1384B4 + ba, 0x4405FF); }
@@ -43,6 +57,17 @@ namespace SpelunkyPracticeTool
                 set { Memory.WriteBool(value, 0x1384B4 + ba, 0x440606); }
             }
 
+            public static bool ShopkeeperAggro
+            {
+                get { return Memory.ReadBool(0x1384B4 + ba, 0x44060C); }
+                set { Memory.WriteInt(value ? 2 : 0, 0x1384B4 + ba, 0x44060C); }
+            }
+
+            public static bool AnubisAggro
+            {
+                get { return Memory.ReadBool(0x1384B4 + ba, 0xC4); }
+                set { Memory.WriteBool(value, 0x1384B4 + ba, 0xC4); }
+            }
 
             public static int CurrentLevel
             {
@@ -61,6 +86,7 @@ namespace SpelunkyPracticeTool
                 get { return Memory.ReadBool(0x1384B4 + ba, 0x440712); }
                 set { Memory.WriteBool(value, 0x1384B4 + ba, 0x440712); }
             }
+
             public static bool VladCape
             {
                 get { return Memory.ReadBool(0x1384B4 + ba, 0x440713); }
@@ -70,6 +96,12 @@ namespace SpelunkyPracticeTool
 
         public static class Time
         {
+            public static double TotalMilliseconds
+            {
+                get { return Memory.ReadDouble(0x1384B4 + ba, 0x445948); }
+                set { Memory.WriteDouble(value, 0x1384B4 + ba, 0x445948); }
+            }
+
             public static int TotalSeconds
             {
                 get { return Memory.ReadInt32(0x1384B4 + ba, 0x445944); }
@@ -78,8 +110,8 @@ namespace SpelunkyPracticeTool
 
             public static int TotalMinutes
             {
-                get { return Memory.ReadInt32(0x138558 + ba, 0x30, 0x280, 0x52B7); }
-                set { Memory.WriteInt(value, 0x138558 + ba, 0x30, 0x280, 0x52B7); }
+                get { return Memory.ReadInt32(0x1384B4 + ba, 0x445940); }
+                set { Memory.WriteInt(value, 0x1384B4 + ba, 0x445940); }
             }
         }
 
@@ -116,7 +148,7 @@ namespace SpelunkyPracticeTool
 
             public static void EquipItem(Items item)
             {
-                Memory.WriteBool(true, 0x138558 + ba, 0x30, 0x280, (int)item);
+                Memory.WriteBool(true, 0x1384B4+ba, 0x440694+(int)item);
             }
 
             public static int JetpackEntityID

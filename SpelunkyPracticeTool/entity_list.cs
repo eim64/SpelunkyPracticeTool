@@ -15,6 +15,7 @@ namespace SpelunkyPracticeTool
     enum AllEntities
     {
         PLAYER = 0,
+        MINE = 92,
         WHIP = 109,
         CHEST = 100,
 		CRATE = 101,

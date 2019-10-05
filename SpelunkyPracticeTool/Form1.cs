@@ -34,6 +34,7 @@ namespace SpelunkyPracticeTool
 
     enum Holdables
     {
+        Mine = 92,
         Rock = 112,
         Pot = 113,
         Skull = 114,
@@ -55,18 +56,25 @@ namespace SpelunkyPracticeTool
         Plasma_Cannon = 517,
         Camera = 518,
         Teleporter = 519,
-        Parachute = 520,
         Cape = 521,
         Jetpack = 522,
         Shield = 523,
         Scepter = 530,
-        Vlads_Cape = 532
     }
 
     public partial class Form1 : Form
     {
         Core core;
+
         entity_list entlist;
+        public TutorialPractice TutorialWindow;
+
+        public int TutorialBombs { get { return (int)TutorialWindow.nmBombs.Value; } }
+        public int TutorialRopes { get { return (int)TutorialWindow.nmRopes.Value; } }
+        public int TutorialHP { get { return (int)TutorialWindow.nmHP.Value; } }
+        public int TutorialLevel { get { return (int)TutorialWindow.nmLevel.Value; } }
+
+        public bool TutorialTimer { get { return TutorialWindow.cbTimer.Checked; } }
 
         public bool CustomLevelStart;
         public int StartLevel = 1;
@@ -78,6 +86,8 @@ namespace SpelunkyPracticeTool
         {
             InitializeComponent();
             core = new Core(this);
+            TutorialWindow = new TutorialPractice();
+            TutorialWindow.Show();
         }
 
         public Process FindProcess()
@@ -209,6 +219,11 @@ namespace SpelunkyPracticeTool
         }
 
         private void checkBox8_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox2_Enter_1(object sender, EventArgs e)
         {
 
         }
